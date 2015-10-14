@@ -1,16 +1,14 @@
 \name{MtkCalc}
 \alias{MtkCalc}
-%- Also NEED an '\alias' for EACH other topic documented here.
 \title{
-MTK calculator
+MTK calculator (Depreciated)
 }
 \description{
-This function calculates the Mean of Transformed Kinships (MTK) of a set of genotypes.
+***This function has been superseeded by MTK.
 }
 \usage{
 MtkCalc(genos, subset, power = 10)
 }
-%- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{genos}{
     A matrix of genotypes, that includes all genotypes that should be used to create the kinship matrix, where each column is one individual, each row is one marker, and marker values are 1, 0, or -1, where 0 represents missing data.  All data in this matrix must be numeric.

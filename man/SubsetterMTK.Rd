@@ -1,8 +1,8 @@
 \name{SubsetterMTK}
 \alias{SubsetterMTK}
-\title{Genotype Subsetting with PIC - Method One}
+\title{Genotype Subsetting with PIC - Method One (Depreciated)}
 \description{
-This function systematically eliminates genotypes from a large population on the basis of which genotype's removal would result in the population with the highest Mean of Transformed Kinships (MTK).  This method will typically return a subset with a lower mean MTK than the method used by the SubsetterCombinedMTK function if sufficient permutations are used for the later, but is quicker and will rank all genotypes, as opposed to returning a single, static subset. Subsetting with MTK is likely more beneficial for Genome-Wide Association Scanning (GWAS), and subsetting with an alternative criteria, the Polymorphism Information Content (PIC), is likely more beneficial for rare-trait discovery.
+***This function has been superseeded by CoreSetter.
 }
 \usage{
 SubsetterMTK(genos, save = NULL, power = 10, mat = NULL)
@@ -25,15 +25,11 @@ SubsetterMTK(genos, save = NULL, power = 10, mat = NULL)
 \value{
     Returns a matrix with four columns.  The first column is the importance of a particular genotype to the population's MTK, based on the order in which genotypes were eliminated.  The second column is the name of the genotype. The third and fourth columns are the MTK, and the mean of untransformed kinship values, respectively, of a population that includes the corresponding genotype, plus all genotypes that are more important.
 }
-
 \author{
 Ryan C. Graebner
 }
-
 \examples{
 data("genotypes")
 SubsetterMTK(genotypes,save=colnames(genotypes)[c(1,5,9)])
 }
-% Add one or more standard keywords, see file 'KEYWORDS' in the
-% R documentation directory.
 \keyword{ misc }

@@ -5,7 +5,7 @@
 Sample Barley Genotypes
 }
 \description{
-Twenty barley genotypes, with twenty markers each, for to demonstrate functions in the "GeneticSubsetter" package.
+Twenty barley genotypes, with twenty markers each, for to demonstrate functions in the GeneticSubsetter package.
 }
 \usage{data(genotypes)}
 \format{

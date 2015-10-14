@@ -38,7 +38,7 @@ function(genos,save=NULL,power=10,mat=NULL){
   }else{
     result.list[(n.genos-1):n.genos,1]<-1
     result.list[(n.genos-1):n.genos,2]<-c(colnames(mat))
-    result.list[(n.genos-1),3]<-sum(mat)/(n.genos^2-n.genos)
+    result.list[(n.genos-1),3]<-sum(mat)/(n.genos^2)
   }
    result.list[,4]<-as.numeric(result.list[,3])^(1/power)
   return(result.list)

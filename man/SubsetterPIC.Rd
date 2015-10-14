@@ -1,11 +1,10 @@
 \name{SubsetterPIC}
 \alias{SubsetterPIC}
-%- Also NEED an '\alias' for EACH other topic documented here.
 \title{
-Genotype Subsetting with PIC - Method One
+Genotype Subsetting with PIC - Method One (Depreciated)
 }
 \description{
-This function systematically eliminates genotypes from a large population on the basis of which genotype's removal would result in the population with the highest mean Polymorphism Information Content (PIC).  This method will typically return a subset with a lower mean PIC than the method used by the SubsetterCombinedPIC function if sufficient permutations are used for the later, but is quicker and will rank all genotypes, as opposed to returning a single, static subset. Subsetting with PIC is likely more beneficial for rare-trait discovery, and subsetting with an alternative criteria, the Mean of Transformed Kinships (MTK), is likely more beneficial for Genome-Wide Association Scanning (GWAS). This function uses the same method and criteria described in Munoz-Amatrain et al. (2014), but with a more computationally efficient approach.
+***This function has been superseeded by CoreSetter.
 }
 \usage{
 SubsetterPIC(genos, save = NULL)
