@@ -6,7 +6,6 @@ function(genos,subset,criterion=c("HET","MTK"),mat=NULL,save=NULL,power=10,print
   extra<-setdiff(colnames(genos),subset)
   extra.genos<-length(extra)
   n.genos<-ncol(genos)
-  genos[is.na(genos)]<-0
   m<-nrow(genos)
   i<-0
   j<-1

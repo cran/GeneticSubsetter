@@ -4,7 +4,7 @@
 Genotype Subsetting-Alternative Method
 }
 \description{
-This function creates a series of random subsets.  Then, each of these subsets is improved using the CoreSetOptimizer function using a series of single-genotype replacements that result in a higher value for the subset, until no more single-genotype replacements can be made to improve the subset. Criteria that can be used to judge the value of subsets are Heterozygosity (HET; for rare-trait discovery; called PIC in earlier versions and in the paper describing this package), and the Mean of Transformed Kinships (MTK; for GWAS). A complete comparison of these two criteria is presented in Graebner et al. (2015).
+This function creates a series of random subsets.  Then, each of these subsets is improved using the CoreSetOptimizer function using a series of single-genotype replacements that result in a higher value for the subset, until no more single-genotype replacements can be made to improve the subset. This process is similar to a Local Search. Criteria that can be used to judge the value of subsets are Expected Heterozygosity (HET; for rare-trait discovery; called PIC in earlier versions and in the paper describing this package), and the Mean of Transformed Kinships (MTK; for GWAS). A complete comparison of these two criteria is presented in Graebner et al. (2015).
 }
 \usage{
 CoreSetterCombined(genos, size, criterion =  c("HET","MTK"),

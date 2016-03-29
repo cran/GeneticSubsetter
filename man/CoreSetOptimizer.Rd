@@ -4,7 +4,7 @@
 Subset Optimization
 }
 \description{
-This function works to systematically improves a subset via single-genotype replacements from a larger population.  This function will continue to work until no more single-genotype replacements can be made to increase the subset's value. Criteria that can be used to judge the value of subsets are Heterozygosity (HET; for rare-trait discovery; called PIC in earlier versions and in the paper describing this package), and the Mean of Transformed Kinships (MTK; for GWAS). A complete comparison of these two criteria is presented in Graebner et al. (2015).
+This function works to systematically improves a subset via single-genotype replacements from a larger population.  This function will continue to work until no more single-genotype replacements can be made to increase the subset's value. Criteria that can be used to judge the value of subsets are Expected Heterozygosity (HET; for rare-trait discovery; called PIC in earlier versions and in the paper describing this package), and the Mean of Transformed Kinships (MTK; for GWAS). A complete comparison of these two criteria is presented in Graebner et al. (2015).
 }
 \usage{
 CoreSetOptimizer(genos, subset, criterion = c("HET","MTK"), 

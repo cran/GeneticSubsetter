@@ -4,7 +4,7 @@
 Genotype Subsetting
 }
 \description{
-This function systematically eliminates genotypes from a large population to arrive at a favorable subset.  This method will typically return less favorable subsets than the method used by the CoreSetterCombined function if sufficient permutations are used for the later, but CoreSetter is quicker, and will rank all genotypes, as opposed to returning a single, static subset. Criteria that can be used to judge the value of subsets are Heterozygosity (HET; for rare-trait discovery; called PIC in earlier versions and in the paper describing this package), and the Mean of Transformed Kinships (MTK; for GWAS). A complete comparison of these two criteria is presented in Graebner et al. (2015).
+This function systematically eliminates genotypes from a large population to arrive at a favorable subset.  This method will typically return less favorable subsets than the method used by the CoreSetterCombined function if sufficient permutations are used for the later, but CoreSetter is quicker, and will rank all genotypes, as opposed to returning a single, static subset. Criteria that can be used to judge the value of subsets are Expected Heterozygosity (HET; for rare-trait discovery; called PIC in earlier versions and in the paper describing this package), and the Mean of Transformed Kinships (MTK; for GWAS). A complete comparison of these two criteria is presented in Graebner et al. (2015).
 }
 \usage{
 CoreSetter(genos, criterion = c("HET","MTK"), save = NULL,

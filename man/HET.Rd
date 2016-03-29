@@ -4,7 +4,7 @@
 Heterozygosity Calculator
 }
 \description{
-This function calculates the mean Heterozygosity (HET; called PIC in earlier versions and in the paper describing this package) of a set of genotypes.
+This function calculates the Expected Heterozygosity (HET; called PIC in earlier versions and in the paper describing this package) of a set of genotypes.
 }
 \usage{
 HET(data)

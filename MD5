@@ -1,6 +1,6 @@
-59772a3b5da37ec2e92e3c52316135ca *DESCRIPTION
+66c48a905833b2e9ba54247d723496bb *DESCRIPTION
 97516a7e73dd670085c1cbd2eeddcf5e *NAMESPACE
-a8ab69658491689e965e77fefbe0e265 *R/CoreSetOptimizer.R
+964206608de4d598c8d65b9b1ae89366 *R/CoreSetOptimizer.R
 17ec0d5ffd23057f16e94b3fbfc14302 *R/CoreSetter.R
 26b84ce1302a90b1c68ab36b94980252 *R/CoreSetterCombined.R
 0de74617ddec715f66a8dd2d5da8389b *R/HET.R
@@ -10,13 +10,13 @@ fd21cc8c8088e5e938d7d3a8e8a03d64 *R/MtkCalc.R
 9b66e5e0b1b5f08cbfa2595ec21688c6 *R/SubsetterMTK.R
 4e6bd42041cfaec744a9773bd7b38746 *R/SubsetterPIC.R
 5aa4859a2d82611422b80f4449f301f7 *data/genotypes.rda
-49aade7b040225308899a21673769d1a *man/CoreSetOptimizer.Rd
-2718c74b15190d4d2d218468b991b559 *man/CoreSetter.Rd
-7606837905a33de9a4a85d200d7dabd4 *man/CoreSetterCombined.Rd
-fc440adfcbb798d3ff5f040bff3ebf7b *man/GeneticSubsetter.Rd
+097e1a9baa100bdd57f2851e16ca6e6c *man/CoreSetOptimizer.Rd
+8f8fa48d1fbd9f6f5df220c9660a5979 *man/CoreSetter.Rd
+03c739aecf8a991119a7caa0328eb8b7 *man/CoreSetterCombined.Rd
+5f6fc64c28d914bd1bf5e67fd8d5f991 *man/GeneticSubsetter.Rd
+7f7100b95f30f35a91ba9157497c0c4b *man/HET.Rd
 ef0404846523a383da72511c3a8d16c2 *man/MTK.Rd
 6bd9f4ba44872f97aa2f5619b96450c0 *man/MtkCalc.Rd
-14ac092652f26f7a458635226c255256 *man/PIC.Rd
 951104f07d560c8a02fdff66cf8b359e *man/PicCalc.Rd
 095b9fe87f98916b80b4bc74912c4b83 *man/SubsetterMTK.Rd
 ebe199d096057577d9bca178a952cc93 *man/SubsetterPIC.Rd
