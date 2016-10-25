@@ -5,13 +5,12 @@
 Sample Barley Genotypes
 }
 \description{
-Twenty barley genotypes, with twenty markers each, for to demonstrate functions in the GeneticSubsetter package.
+Twenty diploid barley genotypes, with twenty markers each, for to demonstrate functions in the GeneticSubsetter package.
 }
 \usage{data(genotypes)}
 \format{
-  A data frame where columns are gentoypes, and rows are markers.
+  Columns are gentoypes, and rows are markers, formatted for the CoreSetter, CoreSetterCombined, CoreSetOptimizer, HET, MTK.
 }
-
 \source{
 Triticeae Coordinated Agricultural Project (T-CAP) (http://triticeaetoolbox.org)
 }

@@ -1,15 +1,14 @@
 CoreSetOptimizer<-
-function(genos,subset,criterion=c("HET","MTK"),mat=NULL,save=NULL,power=10,print=TRUE){
-  genos<-as.matrix(genos)
-  mode(genos)<-"numeric"
-  subset.genos<-length(subset)
-  extra<-setdiff(colnames(genos),subset)
-  extra.genos<-length(extra)
-  n.genos<-ncol(genos)
-  m<-nrow(genos)
+function(genos=NULL,subset=NULL,criterion="HET",mat=NULL,save=NULL,power=10,print=TRUE){
   i<-0
   j<-1
   if(criterion=="HET"){
+  	if(length(setdiff(save,colnames(genos)))>0) stop("One or more saved genotypes not present in genos")
+    subset.genos<-length(subset)
+    extra<-setdiff(colnames(genos),subset)
+    extra.genos<-length(extra)
+    n.genos<-ncol(genos)
+    m<-nrow(genos)
     het<-HET(genos[,subset])
     if(print==TRUE) print(c("Starting HET:",het))
     mat.a<-matrix(0,nrow=m,ncol=n.genos)  
@@ -58,8 +57,14 @@ function(genos,subset,criterion=c("HET","MTK"),mat=NULL,save=NULL,power=10,print
   }
   if(criterion=="MTK"){
     if(is.null(mat)){
-      mat<-A.mat(t(genos))
+      if(length(setdiff(save,colnames(genos)))>0) stop("One or more saved genotypes not present in genos")
+      mat<-Mat(genos)
     }
+    if(length(setdiff(save,colnames(mat)))>0) stop("One or more saved genotypes not present in mat")
+    subset.genos<-length(subset)
+    extra<-setdiff(colnames(mat),subset)
+    extra.genos<-length(extra)
+    n.genos<-ncol(mat)
     mat.adj<-(2*(mat-min(mat))/(max(mat)-min(mat)))^power
     for(i in 1:n.genos){
       mat.adj[i,i]<-0
@@ -75,7 +80,7 @@ function(genos,subset,criterion=c("HET","MTK"),mat=NULL,save=NULL,power=10,print
             i<-0
             kin<-temp.log
             old<-subset[j]
-            subset<-c(subset[-j],extra[k])
+            subset[j]<-extra[k]
             extra[k]<-old
             if(print==TRUE) print(c("Value:",kin))
           }

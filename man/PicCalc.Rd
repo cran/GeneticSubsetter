@@ -5,7 +5,7 @@ PIC Calculator (Depreciated)
 }
 \description{
 
-***This function has been superseeded by PIC.
+***This function has been superseded by PIC.
 }
 \usage{
 PicCalc(data)

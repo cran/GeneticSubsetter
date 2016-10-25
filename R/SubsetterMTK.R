@@ -8,7 +8,7 @@ function(genos,save=NULL,power=10,mat=NULL){
   result.list[,1]<-n.genos:1
   colnames(result.list)<-c("Rank","Individual","Score","Mean Kinship")
   if(is.null(mat)){
-    mat<-A.mat(t(genos))
+    mat<-Mat(genos)
     mat<-(2*(mat-min(mat))/(max(mat)-min(mat)))^power
     for(i in 1:n.genos){
       mat[i,i]<-0

@@ -7,7 +7,7 @@ Genotype Subsetting-Alternative Method
 This function creates a series of random subsets.  Then, each of these subsets is improved using the CoreSetOptimizer function using a series of single-genotype replacements that result in a higher value for the subset, until no more single-genotype replacements can be made to improve the subset. This process is similar to a Local Search. Criteria that can be used to judge the value of subsets are Expected Heterozygosity (HET; for rare-trait discovery; called PIC in earlier versions and in the paper describing this package), and the Mean of Transformed Kinships (MTK; for GWAS). A complete comparison of these two criteria is presented in Graebner et al. (2015).
 }
 \usage{
-CoreSetterCombined(genos, size, criterion =  c("HET","MTK"),
+CoreSetterCombined(genos=NULL, size=NULL, criterion =  "HET",
     save = NULL, power = 10, permutations = 100, print = TRUE,
     mat = NULL)
 }
@@ -34,26 +34,26 @@ CoreSetterCombined(genos, size, criterion =  c("HET","MTK"),
     If TRUE, this function prints the Heterozygosity or MTK of the best subset identified.
 }
   \item{mat}{
-    A kinship matrix, if one has already been computed for the population.
+    A kinship matrix, if one has already been computed for the population. If a kinship matrix is included, the "genos" argument may be left empty.
 }
 }
 \value{
   Returns a list of the genotype names included in the best subset found.
 }
 \references{
-Graebner RC, Hayes PM, Hagerty CH, Cuesta-Marcos A (2015) A comparison of polymorphism information content and mean of transformed kinships as criteria for selection informative subsets of barley (Hordeum vulgare L. s. l) from the USDA Barley Core Collection. Genet Resour Crop Evol doi:10.1007/s10722-015-0265-z.
+Graebner RC, Hayes PM, Hagerty CH, Cuesta-Marcos A (2016) A comparison of polymorphism information content and mean of transformed kinships as criteria for selection informative subsets of barley (Hordeum vulgare L. s. l) from the USDA Barley Core Collection. Genet Resour Crop Evol 63:477-482.
 }
 \author{
 Ryan C Graebner
 }
 \note{
-The ability to recogize heterozygous markers was included in CoreSetterCombined, resulting in a slightly different genotype coding scheme than the depreciated functions SubsetterCombinedPIC and SubsetterCombinedMTK.
+The ability to recognize heterozygous markers was included in CoreSetterCombined, resulting in a slightly different genotype coding scheme than the depreciated functions SubsetterCombinedPIC and SubsetterCombinedMTK.
 }
 \examples{
 data("genotypes")
-CoreSetterCombined(genotypes,size=6,criterion="HET",
+CoreSetterCombined(genotypes,size=6,criterion="HET",permutations=10,
     save=colnames(genotypes)[c(1,5,9)])
-CoreSetterCombined(genotypes,size=6,criterion="MTK",
+CoreSetterCombined(genotypes,size=6,criterion="MTK",permutations=10,
     save=colnames(genotypes)[c(1,5,9)])
 }
 \keyword{ misc }

@@ -1,0 +1,89 @@
+---
+title: "Using GeneticSubsetter to select informative subsets of germplasm collections"
+author: "Ryan C Graebner"
+date: "October 25, 2016"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Using GeneticSubsetter to select informative subsets of germplasm collections}
+  %\VignetteEngine{knitr::rmarkdown}
+  \usepackage[utf8]{inputenc}
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(GeneticSubsetter)
+```
+
+## Overview of GeneticSubsetter
+###Introduction
+  To identify an informative subset of a germplasm collection, two key components must be defined: a criterion by which to appropriately judge the value of a subset, and a strategy that can be used to identify a good, or ideally the best, subset according to that criterion (De Beukelaer et al. 2012; Graebner et al. 2016). An exhaustive search, in which every possible subset is tested, is one example of a strategy, although it is generally not possible to employ for large populations, due to the extreme number of possible subsets (more possibilities than atoms in the universe in some instances).
+  
+###Subsetting criteria
+  GeneticSubsetter can identify subsets based on two criteria: Expected Heterozygosity (HET) and the Mean of Transformed Kinships (MTK). HET measures the allelic diversity in a subset, which has been shown to assist in identifying subsets more likely to contain rare traits in a germplasm collection (rare trait discovery). In the paper describing GeneticSubsetter and in earlier versions of GeneticSubsetter, Expected Heterozygosity was refered to as Polymorphism Information Content (PIC). MTK measures the kinship of genotypes in a subset, and can be used to identify the subset with the most dissimilar set of genotypes, which has been shown to assist in identifying subsets that are favorable for genome-wide association mapping. *There is no evidence that using HET to identify subsets for GWAS, or that using MTK for rare trait discovery, is preferable to randomly picking genotypes*. A more detailed discription of these criteria can be found in Graebner et al. (2015).
+  
+###Subsetting Strategies
+  GeneticSubsetter can also employ two strategies for identifying favorable subsets of germplasm, as defined by the chosen criteria: Sequential Backward Selection (SBS) and a Local Search (LS). SBS, which is employed by the functions CoreSetter and CoreSetterPoly, consists of the systematic removal of genotypes from the full population. *SBS is recommended for most purposes.* For local search, which is employed by the function CoreSetterCombined, single-genotype replacements are repeatedly made to multiple random starting subsets, until no more single-genotype replacements can be made. While this strategy generally produces more favorable subsets than SBS, these gains are usually marginal, and the use of random starting points means that this strategy is not guaranteed to give the same result on consecutive runs.
+  
+###Computational requirements
+  GeneticSubsetter was designed to enable subsetting of large datasets on mid-range computers, without compromising the quality of the analysis. The capacity and time required to complete computation depends on the dataset, input parameters, and the computer's hardware. However, as a reference, a dataset with 2,000 genotypes and 6,000 markers, when processed using the CoreSetter function and the HET criterion, should take approximately 2 hours to complete on a low-end computer. When using the MTK criterion, providing an appropriate kinship matrix will substantially reduce run time. There GeneticSubsetter can be run on all platforms that support R, including Linux, Mac, and Windows.
+
+
+## Subsetting using CoreSetter
+###Inputs
+
+```{r genotypes}
+library(GeneticSubsetter)
+data(genotypes)
+genotypes[1:10,1:6]
+a<-CoreSetter(genos=genotypes,criterion="HET", save=c("Genotype 1","Genotype 5","Genotype 9"))
+```
+
+*genos*
+  A matrix of genotypic data for the population to be subsetted. Each row corresponds to a locus, and each column corresponds to a genotype. Alleles must be coded as follows: "1" is homozygous for allele A, "-1" is for homozygous for allele B, "0" is heterozygous, and "NA" denotes missing data (Figure 1). This argument is ignored if the MTK criterion is selected, and kinship matrix is provided.
+
+*criterion*
+  The criterion used to quantify the value of subsets. Expected Heterozygosity ("HET") can identify subsets favorable for rare-trait discovery, and the Mean of Transformed Kinships ("MTK") can identify subsets favorable for GWAS.
+
+*save*
+  A list of genotypes can be included that cannot be removed from the population. This may be desired if phenotypic work is already complete for those genotypes, or if there there is a special interest in them.
+
+###Output
+
+```{r CoreSetter}
+print(a)
+```
+
+  CoreSetter returns a list of each of the genotypes present in the full population, in the order that they were removed. To select a subset of a given size, simply take each of the subsets with a rank of the desired subset size or less. For example, if a subset size of 10 is desired, use each of the genotypes with ranks 1-10. The value in the third column corresponding to the rank of the desired subset size is the value of that subset according to the selected criterion. Notice that each of the saved genotypes will be present in any selected subset.
+  If no genotypes are saved, two genotypes have a rank of "1". This is because these criteria are only relevent in the context of a population (if only two people are in a room, neither person is more diverse than the other without the context of other people).
+
+
+
+## Subsetting using CoreSetterPoly
+  CoreSetterPoly enables the analysis populations of autopolyploid organisms, and/or populations with polyallelic markers. In this case, the input datasets "genotypes" and "genotypes.poly" contain the same genetic information, in two formats, so their output will be the same. Currently, CoreSetterPoly is only equiped to use the HET criterion, and can only perform Sequential Backward Selection. If the selected subset is intended to be used for GWAS, it is recommended that a kinship matrix for the data set is made by the user, and run through CoreSetter to identify a subset informative for GWAS.
+
+###Inputs
+```{r genotypes.poly}
+library(GeneticSubsetter)
+data(genotypes)
+genotypes.poly[1:10,1:6]
+a<-CoreSetterPoly(genotypes.poly,ploidy=2,save=c("Genotype 1","Genotype 5","Genotype 9"))
+```
+
+
+*genos*
+  A matrix of genotypic data. Each row corresponds to one genotype. The marker data is arranged by columns, where blocks of X columns represent each marker, and X is the stated ploidy. For instance, a dataset for an diploid describing 20 loci would have 2*20=40 columns, with each set of four columns containing data for one locus (Figure 3). 
+  Each locus may contain any number of alleles, where each allele is coded by an integer (allele A is 1, allele B is 2, etc.). The X cells describing the genetic information for one genotype at one locus may include any combination of the alleles for that locus. If the allele frequencies are known, alleles should be present in their respective frequencies (1 1 1 3 would indicate three copies of the "1" allele and one copy of the "3" allele at a locus).
+
+*ploidy*
+  The number of alleles that can be present at any one locus. For example, this value should be "4" for an autotetraploid, but "2" for a allotetraploid.
+
+###Outputs
+  Output format for CoreSetterPoly is identical to that of CoreSetter.
+  
+  
+
+##References
+De Beukelaer H, Smykal P, Davenport GF, Fack V (2012) Core Hunter II: fast core subset selection based on multiple genetic diversity measures using Mixed Replica search. BMC Bioinformatics 13:312.
+
+Graebner RC, Hayes PM, Hagerty CH, Cuesta-Marcos A (2016) A comparison of polymorphism information content and mean of transformed kinships as criteria for selecting informative subsets of barley (Hordeum vulgare L. s. l.) from the USDA Barley Core Collection. Genetic Resources and Crop Evolution 63:477-482.
+

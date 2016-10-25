@@ -30,7 +30,7 @@ The MTK of the specified subset.
 Ryan C. Graebner
 }
 \note{
-The ability to recogize heterozygous markers was included in MTK, resulting in a slightly different genotype coding scheme than the earlier MtkCalc.
+The ability to recognize heterozygous markers was included in MTK, resulting in a slightly different genotype coding scheme than the earlier MtkCalc.
 }
 \examples{
 data(genotypes)

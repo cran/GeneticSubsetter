@@ -4,7 +4,7 @@
 MTK calculator (Depreciated)
 }
 \description{
-***This function has been superseeded by MTK.
+***This function has been superseded by MTK.
 }
 \usage{
 MtkCalc(genos, subset, power = 10)

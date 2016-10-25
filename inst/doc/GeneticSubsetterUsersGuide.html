@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<meta name="author" content="Ryan C Graebner" />
+
+<meta name="date" content="2016-10-25" />
+
+<title>Using GeneticSubsetter to select informative subsets of germplasm collections</title>
+
+
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code > span.dt { color: #902000; } /* DataType */
+code > span.dv { color: #40a070; } /* DecVal */
+code > span.bn { color: #40a070; } /* BaseN */
+code > span.fl { color: #40a070; } /* Float */
+code > span.ch { color: #4070a0; } /* Char */
+code > span.st { color: #4070a0; } /* String */
+code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code > span.ot { color: #007020; } /* Other */
+code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code > span.fu { color: #06287e; } /* Function */
+code > span.er { color: #ff0000; font-weight: bold; } /* Error */
+code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #880000; } /* Constant */
+code > span.sc { color: #4070a0; } /* SpecialChar */
+code > span.vs { color: #4070a0; } /* VerbatimString */
+code > span.ss { color: #bb6688; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #19177c; } /* Variable */
+code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #666666; } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #bc7a00; } /* Preprocessor */
+code > span.at { color: #7d9029; } /* Attribute */
+code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+</style>
+
+
+
+<link href="data:text/css;charset=utf-8,body%20%7B%0Abackground%2Dcolor%3A%20%23fff%3B%0Amargin%3A%201em%20auto%3B%0Amax%2Dwidth%3A%20700px%3B%0Aoverflow%3A%20visible%3B%0Apadding%2Dleft%3A%202em%3B%0Apadding%2Dright%3A%202em%3B%0Afont%2Dfamily%3A%20%22Open%20Sans%22%2C%20%22Helvetica%20Neue%22%2C%20Helvetica%2C%20Arial%2C%20sans%2Dserif%3B%0Afont%2Dsize%3A%2014px%3B%0Aline%2Dheight%3A%201%2E35%3B%0A%7D%0A%23header%20%7B%0Atext%2Dalign%3A%20center%3B%0A%7D%0A%23TOC%20%7B%0Aclear%3A%20both%3B%0Amargin%3A%200%200%2010px%2010px%3B%0Apadding%3A%204px%3B%0Awidth%3A%20400px%3B%0Aborder%3A%201px%20solid%20%23CCCCCC%3B%0Aborder%2Dradius%3A%205px%3B%0Abackground%2Dcolor%3A%20%23f6f6f6%3B%0Afont%2Dsize%3A%2013px%3B%0Aline%2Dheight%3A%201%2E3%3B%0A%7D%0A%23TOC%20%2Etoctitle%20%7B%0Afont%2Dweight%3A%20bold%3B%0Afont%2Dsize%3A%2015px%3B%0Amargin%2Dleft%3A%205px%3B%0A%7D%0A%23TOC%20ul%20%7B%0Apadding%2Dleft%3A%2040px%3B%0Amargin%2Dleft%3A%20%2D1%2E5em%3B%0Amargin%2Dtop%3A%205px%3B%0Amargin%2Dbottom%3A%205px%3B%0A%7D%0A%23TOC%20ul%20ul%20%7B%0Amargin%2Dleft%3A%20%2D2em%3B%0A%7D%0A%23TOC%20li%20%7B%0Aline%2Dheight%3A%2016px%3B%0A%7D%0Atable%20%7B%0Amargin%3A%201em%20auto%3B%0Aborder%2Dwidth%3A%201px%3B%0Aborder%2Dcolor%3A%20%23DDDDDD%3B%0Aborder%2Dstyle%3A%20outset%3B%0Aborder%2Dcollapse%3A%20collapse%3B%0A%7D%0Atable%20th%20%7B%0Aborder%2Dwidth%3A%202px%3B%0Apadding%3A%205px%3B%0Aborder%2Dstyle%3A%20inset%3B%0A%7D%0Atable%20td%20%7B%0Aborder%2Dwidth%3A%201px%3B%0Aborder%2Dstyle%3A%20inset%3B%0Aline%2Dheight%3A%2018px%3B%0Apadding%3A%205px%205px%3B%0A%7D%0Atable%2C%20table%20th%2C%20table%20td%20%7B%0Aborder%2Dleft%2Dstyle%3A%20none%3B%0Aborder%2Dright%2Dstyle%3A%20none%3B%0A%7D%0Atable%20thead%2C%20table%20tr%2Eeven%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0A%7D%0Ap%20%7B%0Amargin%3A%200%2E5em%200%3B%0A%7D%0Ablockquote%20%7B%0Abackground%2Dcolor%3A%20%23f6f6f6%3B%0Apadding%3A%200%2E25em%200%2E75em%3B%0A%7D%0Ahr%20%7B%0Aborder%2Dstyle%3A%20solid%3B%0Aborder%3A%20none%3B%0Aborder%2Dtop%3A%201px%20solid%20%23777%3B%0Amargin%3A%2028px%200%3B%0A%7D%0Adl%20%7B%0Amargin%2Dleft%3A%200%3B%0A%7D%0Adl%20dd%20%7B%0Amargin%2Dbottom%3A%2013px%3B%0Amargin%2Dleft%3A%2013px%3B%0A%7D%0Adl%20dt%20%7B%0Afont%2Dweight%3A%20bold%3B%0A%7D%0Aul%20%7B%0Amargin%2Dtop%3A%200%3B%0A%7D%0Aul%20li%20%7B%0Alist%2Dstyle%3A%20circle%20outside%3B%0A%7D%0Aul%20ul%20%7B%0Amargin%2Dbottom%3A%200%3B%0A%7D%0Apre%2C%20code%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0Aborder%2Dradius%3A%203px%3B%0Acolor%3A%20%23333%3B%0Awhite%2Dspace%3A%20pre%2Dwrap%3B%20%0A%7D%0Apre%20%7B%0Aborder%2Dradius%3A%203px%3B%0Amargin%3A%205px%200px%2010px%200px%3B%0Apadding%3A%2010px%3B%0A%7D%0Apre%3Anot%28%5Bclass%5D%29%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0A%7D%0Acode%20%7B%0Afont%2Dfamily%3A%20Consolas%2C%20Monaco%2C%20%27Courier%20New%27%2C%20monospace%3B%0Afont%2Dsize%3A%2085%25%3B%0A%7D%0Ap%20%3E%20code%2C%20li%20%3E%20code%20%7B%0Apadding%3A%202px%200px%3B%0A%7D%0Adiv%2Efigure%20%7B%0Atext%2Dalign%3A%20center%3B%0A%7D%0Aimg%20%7B%0Abackground%2Dcolor%3A%20%23FFFFFF%3B%0Apadding%3A%202px%3B%0Aborder%3A%201px%20solid%20%23DDDDDD%3B%0Aborder%2Dradius%3A%203px%3B%0Aborder%3A%201px%20solid%20%23CCCCCC%3B%0Amargin%3A%200%205px%3B%0A%7D%0Ah1%20%7B%0Amargin%2Dtop%3A%200%3B%0Afont%2Dsize%3A%2035px%3B%0Aline%2Dheight%3A%2040px%3B%0A%7D%0Ah2%20%7B%0Aborder%2Dbottom%3A%204px%20solid%20%23f7f7f7%3B%0Apadding%2Dtop%3A%2010px%3B%0Apadding%2Dbottom%3A%202px%3B%0Afont%2Dsize%3A%20145%25%3B%0A%7D%0Ah3%20%7B%0Aborder%2Dbottom%3A%202px%20solid%20%23f7f7f7%3B%0Apadding%2Dtop%3A%2010px%3B%0Afont%2Dsize%3A%20120%25%3B%0A%7D%0Ah4%20%7B%0Aborder%2Dbottom%3A%201px%20solid%20%23f7f7f7%3B%0Amargin%2Dleft%3A%208px%3B%0Afont%2Dsize%3A%20105%25%3B%0A%7D%0Ah5%2C%20h6%20%7B%0Aborder%2Dbottom%3A%201px%20solid%20%23ccc%3B%0Afont%2Dsize%3A%20105%25%3B%0A%7D%0Aa%20%7B%0Acolor%3A%20%230033dd%3B%0Atext%2Ddecoration%3A%20none%3B%0A%7D%0Aa%3Ahover%20%7B%0Acolor%3A%20%236666ff%3B%20%7D%0Aa%3Avisited%20%7B%0Acolor%3A%20%23800080%3B%20%7D%0Aa%3Avisited%3Ahover%20%7B%0Acolor%3A%20%23BB00BB%3B%20%7D%0Aa%5Bhref%5E%3D%22http%3A%22%5D%20%7B%0Atext%2Ddecoration%3A%20underline%3B%20%7D%0Aa%5Bhref%5E%3D%22https%3A%22%5D%20%7B%0Atext%2Ddecoration%3A%20underline%3B%20%7D%0A%0Acode%20%3E%20span%2Ekw%20%7B%20color%3A%20%23555%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Edt%20%7B%20color%3A%20%23902000%3B%20%7D%20%0Acode%20%3E%20span%2Edv%20%7B%20color%3A%20%2340a070%3B%20%7D%20%0Acode%20%3E%20span%2Ebn%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Efl%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Ech%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Est%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Eco%20%7B%20color%3A%20%23888888%3B%20font%2Dstyle%3A%20italic%3B%20%7D%20%0Acode%20%3E%20span%2Eot%20%7B%20color%3A%20%23007020%3B%20%7D%20%0Acode%20%3E%20span%2Eal%20%7B%20color%3A%20%23ff0000%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Efu%20%7B%20color%3A%20%23900%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%20code%20%3E%20span%2Eer%20%7B%20color%3A%20%23a61717%3B%20background%2Dcolor%3A%20%23e3d2d2%3B%20%7D%20%0A" rel="stylesheet" type="text/css" />
+
+</head>
+
+<body>
+
+
+
+
+<h1 class="title">Using GeneticSubsetter to select informative subsets of germplasm collections</h1>
+<h4 class="author"><em>Ryan C Graebner</em></h4>
+<h4 class="date"><em>October 25, 2016</em></h4>
+
+
+
+<div id="overview-of-geneticsubsetter" class="section level2">
+<h2>Overview of GeneticSubsetter</h2>
+<div id="introduction" class="section level3">
+<h3>Introduction</h3>
+<p>To identify an informative subset of a germplasm collection, two key components must be defined: a criterion by which to appropriately judge the value of a subset, and a strategy that can be used to identify a good, or ideally the best, subset according to that criterion (De Beukelaer et al. 2012; Graebner et al. 2016). An exhaustive search, in which every possible subset is tested, is one example of a strategy, although it is generally not possible to employ for large populations, due to the extreme number of possible subsets (more possibilities than atoms in the universe in some instances).</p>
+</div>
+<div id="subsetting-criteria" class="section level3">
+<h3>Subsetting criteria</h3>
+<p>GeneticSubsetter can identify subsets based on two criteria: Expected Heterozygosity (HET) and the Mean of Transformed Kinships (MTK). HET measures the allelic diversity in a subset, which has been shown to assist in identifying subsets more likely to contain rare traits in a germplasm collection (rare trait discovery). In the paper describing GeneticSubsetter and in earlier versions of GeneticSubsetter, Expected Heterozygosity was refered to as Polymorphism Information Content (PIC). MTK measures the kinship of genotypes in a subset, and can be used to identify the subset with the most dissimilar set of genotypes, which has been shown to assist in identifying subsets that are favorable for genome-wide association mapping. <em>There is no evidence that using HET to identify subsets for GWAS, or that using MTK for rare trait discovery, is preferable to randomly picking genotypes</em>. A more detailed discription of these criteria can be found in Graebner et al. (2015).</p>
+</div>
+<div id="subsetting-strategies" class="section level3">
+<h3>Subsetting Strategies</h3>
+<p>GeneticSubsetter can also employ two strategies for identifying favorable subsets of germplasm, as defined by the chosen criteria: Sequential Backward Selection (SBS) and a Local Search (LS). SBS, which is employed by the functions CoreSetter and CoreSetterPoly, consists of the systematic removal of genotypes from the full population. <em>SBS is recommended for most purposes.</em> For local search, which is employed by the function CoreSetterCombined, single-genotype replacements are repeatedly made to multiple random starting subsets, until no more single-genotype replacements can be made. While this strategy generally produces more favorable subsets than SBS, these gains are usually marginal, and the use of random starting points means that this strategy is not guaranteed to give the same result on consecutive runs.</p>
+</div>
+<div id="computational-requirements" class="section level3">
+<h3>Computational requirements</h3>
+<p>GeneticSubsetter was designed to enable subsetting of large datasets on mid-range computers, without compromising the quality of the analysis. The capacity and time required to complete computation depends on the dataset, input parameters, and the computer’s hardware. However, as a reference, a dataset with 2,000 genotypes and 6,000 markers, when processed using the CoreSetter function and the HET criterion, should take approximately 2 hours to complete on a low-end computer. When using the MTK criterion, providing an appropriate kinship matrix will substantially reduce run time. There GeneticSubsetter can be run on all platforms that support R, including Linux, Mac, and Windows.</p>
+</div>
+</div>
+<div id="subsetting-using-coresetter" class="section level2">
+<h2>Subsetting using CoreSetter</h2>
+<div id="inputs" class="section level3">
+<h3>Inputs</h3>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(GeneticSubsetter)
+<span class="kw">data</span>(genotypes)
+genotypes[<span class="dv">1</span>:<span class="dv">10</span>,<span class="dv">1</span>:<span class="dv">6</span>]</code></pre></div>
+<pre><code>##          Genotype 1 Genotype 2 Genotype 3 Genotype 4 Genotype 5 Genotype 6
+## Locus 1           1          1          1          1          1          1
+## Locus 2          -1          1         -1         -1          1         -1
+## Locus 3          -1         -1         -1         -1          1          1
+## Locus 4          -1         -1         -1         -1          1         -1
+## Locus 5           1          1          1          1          1          1
+## Locus 6          -1         -1         -1         -1         -1         -1
+## Locus 7          -1         -1          1          1          1          1
+## Locus 8          -1         -1         -1         -1         -1         -1
+## Locus 9          -1         -1         -1         -1         -1         -1
+## Locus 10          1          1          1         -1         -1          1</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">a&lt;-<span class="kw">CoreSetter</span>(<span class="dt">genos=</span>genotypes,<span class="dt">criterion=</span><span class="st">&quot;HET&quot;</span>, <span class="dt">save=</span><span class="kw">c</span>(<span class="st">&quot;Genotype 1&quot;</span>,<span class="st">&quot;Genotype 5&quot;</span>,<span class="st">&quot;Genotype 9&quot;</span>))</code></pre></div>
+<pre><code>## [1] &quot;20  Genotypes&quot;
+## [1] &quot;40  Markers&quot;</code></pre>
+<p><em>genos</em> A matrix of genotypic data for the population to be subsetted. Each row corresponds to a locus, and each column corresponds to a genotype. Alleles must be coded as follows: “1” is homozygous for allele A, “-1” is for homozygous for allele B, “0” is heterozygous, and “NA” denotes missing data (Figure 1). This argument is ignored if the MTK criterion is selected, and kinship matrix is provided.</p>
+<p><em>criterion</em> The criterion used to quantify the value of subsets. Expected Heterozygosity (“HET”) can identify subsets favorable for rare-trait discovery, and the Mean of Transformed Kinships (“MTK”) can identify subsets favorable for GWAS.</p>
+<p><em>save</em> A list of genotypes can be included that cannot be removed from the population. This may be desired if phenotypic work is already complete for those genotypes, or if there there is a special interest in them.</p>
+</div>
+<div id="output" class="section level3">
+<h3>Output</h3>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">print</span>(a)</code></pre></div>
+<pre><code>##       Rank Individual    HET                
+##  [1,] &quot;20&quot; &quot;Genotype 3&quot;  &quot;0.283809123961219&quot;
+##  [2,] &quot;19&quot; &quot;Genotype 13&quot; &quot;0.286357340720222&quot;
+##  [3,] &quot;18&quot; &quot;Genotype 19&quot; &quot;0.289424339997437&quot;
+##  [4,] &quot;17&quot; &quot;Genotype 16&quot; &quot;0.292474048442907&quot;
+##  [5,] &quot;16&quot; &quot;Genotype 7&quot;  &quot;0.295598741319444&quot;
+##  [6,] &quot;15&quot; &quot;Genotype 4&quot;  &quot;0.299189342403628&quot;
+##  [7,] &quot;14&quot; &quot;Genotype 14&quot; &quot;0.302158178360101&quot;
+##  [8,] &quot;13&quot; &quot;Genotype 6&quot;  &quot;0.304881656804734&quot;
+##  [9,] &quot;12&quot; &quot;Genotype 2&quot;  &quot;0.306407110881543&quot;
+## [10,] &quot;11&quot; &quot;Genotype 10&quot; &quot;0.306731404958678&quot;
+## [11,] &quot;10&quot; &quot;Genotype 18&quot; &quot;0.307720679012346&quot;
+## [12,] &quot;9&quot;  &quot;Genotype 8&quot;  &quot;0.310030864197531&quot;
+## [13,] &quot;8&quot;  &quot;Genotype 11&quot; &quot;0.3107421875&quot;     
+## [14,] &quot;7&quot;  &quot;Genotype 17&quot; &quot;0.307397959183673&quot;
+## [15,] &quot;6&quot;  &quot;Genotype 20&quot; &quot;0.301041666666667&quot;
+## [16,] &quot;5&quot;  &quot;Genotype 15&quot; &quot;0.2945&quot;           
+## [17,] &quot;4&quot;  &quot;Genotype 12&quot; &quot;0.27421875&quot;       
+## [18,] &quot;1&quot;  &quot;Genotype 1&quot;  &quot;0.251388888888889&quot;
+## [19,] &quot;1&quot;  &quot;Genotype 5&quot;  &quot;0&quot;                
+## [20,] &quot;1&quot;  &quot;Genotype 9&quot;  &quot;0&quot;</code></pre>
+<p>CoreSetter returns a list of each of the genotypes present in the full population, in the order that they were removed. To select a subset of a given size, simply take each of the subsets with a rank of the desired subset size or less. For example, if a subset size of 10 is desired, use each of the genotypes with ranks 1-10. The value in the third column corresponding to the rank of the desired subset size is the value of that subset according to the selected criterion. Notice that each of the saved genotypes will be present in any selected subset. If no genotypes are saved, two genotypes have a rank of “1”. This is because these criteria are only relevent in the context of a population (if only two people are in a room, neither person is more diverse than the other without the context of other people).</p>
+</div>
+</div>
+<div id="subsetting-using-coresetterpoly" class="section level2">
+<h2>Subsetting using CoreSetterPoly</h2>
+<p>CoreSetterPoly enables the analysis populations of autopolyploid organisms, and/or populations with polyallelic markers. In this case, the input datasets “genotypes” and “genotypes.poly” contain the same genetic information, in two formats, so their output will be the same. Currently, CoreSetterPoly is only equiped to use the HET criterion, and can only perform Sequential Backward Selection. If the selected subset is intended to be used for GWAS, it is recommended that a kinship matrix for the data set is made by the user, and run through CoreSetter to identify a subset informative for GWAS.</p>
+<div id="inputs-1" class="section level3">
+<h3>Inputs</h3>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(GeneticSubsetter)
+<span class="kw">data</span>(genotypes)
+genotypes.poly[<span class="dv">1</span>:<span class="dv">10</span>,<span class="dv">1</span>:<span class="dv">6</span>]</code></pre></div>
+<pre><code>##             Locus 1a Locus 1b Locus 2a Locus 2b Locus 3a Locus 3b
+## Genotype 1         1        1        2        2        2        2
+## Genotype 2         1        1        1        1        2        2
+## Genotype 3         1        1        2        2        2        2
+## Genotype 4         1        1        2        2        2        2
+## Genotype 5         1        1        1        1        1        1
+## Genotype 6         1        1        2        2        1        1
+## Genotype 7         1        1        1        1        1        1
+## Genotype 8         1        1        1        1        2        2
+## Genotype 9         1        1        2        2        2        2
+## Genotype 10        1        1        1        1        1        1</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">a&lt;-<span class="kw">CoreSetterPoly</span>(genotypes.poly,<span class="dt">ploidy=</span><span class="dv">2</span>,<span class="dt">save=</span><span class="kw">c</span>(<span class="st">&quot;Genotype 1&quot;</span>,<span class="st">&quot;Genotype 5&quot;</span>,<span class="st">&quot;Genotype 9&quot;</span>))</code></pre></div>
+<pre><code>## [1] &quot;20  Genotypes&quot;
+## [1] &quot;40  Markers&quot;</code></pre>
+<p><em>genos</em> A matrix of genotypic data. Each row corresponds to one genotype. The marker data is arranged by columns, where blocks of X columns represent each marker, and X is the stated ploidy. For instance, a dataset for an diploid describing 20 loci would have 2*20=40 columns, with each set of four columns containing data for one locus (Figure 3). Each locus may contain any number of alleles, where each allele is coded by an integer (allele A is 1, allele B is 2, etc.). The X cells describing the genetic information for one genotype at one locus may include any combination of the alleles for that locus. If the allele frequencies are known, alleles should be present in their respective frequencies (1 1 1 3 would indicate three copies of the “1” allele and one copy of the “3” allele at a locus).</p>
+<p><em>ploidy</em> The number of alleles that can be present at any one locus. For example, this value should be “4” for an autotetraploid, but “2” for a allotetraploid.</p>
+</div>
+<div id="outputs" class="section level3">
+<h3>Outputs</h3>
+<p>Output format for CoreSetterPoly is identical to that of CoreSetter.</p>
+</div>
+</div>
+<div id="references" class="section level2">
+<h2>References</h2>
+<p>De Beukelaer H, Smykal P, Davenport GF, Fack V (2012) Core Hunter II: fast core subset selection based on multiple genetic diversity measures using Mixed Replica search. BMC Bioinformatics 13:312.</p>
+<p>Graebner RC, Hayes PM, Hagerty CH, Cuesta-Marcos A (2016) A comparison of polymorphism information content and mean of transformed kinships as criteria for selecting informative subsets of barley (Hordeum vulgare L. s. l.) from the USDA Barley Core Collection. Genetic Resources and Crop Evolution 63:477-482.</p>
+</div>
+
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

@@ -7,7 +7,7 @@ Subset Optimization
 This function works to systematically improves a subset via single-genotype replacements from a larger population.  This function will continue to work until no more single-genotype replacements can be made to increase the subset's value. Criteria that can be used to judge the value of subsets are Expected Heterozygosity (HET; for rare-trait discovery; called PIC in earlier versions and in the paper describing this package), and the Mean of Transformed Kinships (MTK; for GWAS). A complete comparison of these two criteria is presented in Graebner et al. (2015).
 }
 \usage{
-CoreSetOptimizer(genos, subset, criterion = c("HET","MTK"), 
+CoreSetOptimizer(genos=NULL, subset=NULL, criterion = "HET", 
     mat = NULL, save = NULL, power = 10, print = TRUE)
 }
 %- maybe also 'usage' for other objects documented here.
@@ -22,7 +22,7 @@ CoreSetOptimizer(genos, subset, criterion = c("HET","MTK"),
     The criterion to be used for comparing subsets (HET or MTK).
 }
   \item{mat}{
-    A kinship matrix, if one has already been computed for the population.
+    A kinship matrix, if one has already been computed for the population. If a kinship matrix is included, the "genos" argument may be left empty.
 }
   \item{save}{
     A list of genotype names, corresponding to the column names in the genotype matrix, that will not be eliminated.
@@ -38,7 +38,7 @@ CoreSetOptimizer(genos, subset, criterion = c("HET","MTK"),
   Returns a list of the genotype names included in the best subset found.
 }
 \references{
-Graebner RC, Hayes PM, Hagerty CH, Cuesta-Marcos A (2015) A comparison of polymorphism information content and mean of transformed kinships as criteria for selection informative subsets of barley (Hordeum vulgare L. s. l) from the USDA Barley Core Collection. Genet Resour Crop Evol doi:10.1007/s10722-015-0265-z.
+Graebner RC, Hayes PM, Hagerty CH, Cuesta-Marcos A (2016) A comparison of polymorphism information content and mean of transformed kinships as criteria for selection informative subsets of barley (Hordeum vulgare L. s. l) from the USDA Barley Core Collection. Genet Resour Crop Evol 63:477-482.
 }
 \author{
 Ryan C. Graebner

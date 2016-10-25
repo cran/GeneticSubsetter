@@ -4,7 +4,7 @@
 Genotype Subsetting with PIC - Method One (Depreciated)
 }
 \description{
-***This function has been superseeded by CoreSetter.
+***This function has been superseded by CoreSetter.
 }
 \usage{
 SubsetterPIC(genos, save = NULL)
